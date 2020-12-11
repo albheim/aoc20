@@ -5,18 +5,14 @@ function hasneighbour(A, p, pd, ignorefloor)
     return all(1 .<= p .<= size(A)) && A[p...] == 1
 end
 
-function occupied(A, x, y, ignorefloor) 
-    directions = setdiff(Iterators.product(fill(-1:1, 2)...), [(0, 0)])
-    return count(pd -> hasneighbour(A, [y, x] .+ pd, pd, ignorefloor), directions)
-end
-
 function run(A, ignorefloor, lim)
     B = similar(A)
+    directions = setdiff(Iterators.product(fill(-1:1, 2)...), [(0, 0)])
     while A != B
         for x in 1:size(A, 2), y in 1:size(A, 1)
-            if A[y, x] == 0 && occupied(A, x, y, ignorefloor) == 0
+            if A[y, x] == 0 && count(pd -> hasneighbour(A, [y, x] .+ pd, pd, ignorefloor), directions) == 0
                 B[y, x] = 1
-            elseif A[y, x] == 1 && occupied(A, x, y, ignorefloor) >= lim
+            elseif A[y, x] == 1 && count(pd -> hasneighbour(A, [y, x] .+ pd, pd, ignorefloor), directions) >= lim
                 B[y, x] = 0
             else
                 B[y, x] = A[y, x]
