@@ -16,8 +16,8 @@ function runcupsgame(cups, iter)
     return links
 end
 
-inp = 315679824
-cups = parse.(Int, collect("$inp"))
+inp = "315679824"
+cups = parse.(Int, collect(inp))
 
 links = runcupsgame(cups, 100)
 
